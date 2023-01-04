@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout-template.html}"
+      th:with="currentPage='Trainer List',currentLink='Trainer',currentTemplate='General Management'"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Trainer list</title>
+</head>
+
+<body>
+<div layout:fragment="content" class="content">
+    <div class="container-fluid col-md-11">
+        <form>
+            <div class="row d-flex justify-content-end">
+                <div class="input-group col-md-3">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <h2 class="mt-0 mb-0">Trainer List</h2>
+            </div>
+            <div class="row d-flex justify-content-end">
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary btn-block">Export</button>
+                </div>
+            </div>
+        </form>
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <div class="strpied-tabled-with-hover">
+                    <div class="card-body table-full-width table-responsive">
+                        <table class="table table-hover text-center">
+                            <thead>
+                            <tr>
+                                <th>NO</th>
+                                <th>NAME</th>
+                                <th>EMAIL</th>
+                                <th>TEL NUMBER</th>
+                                <th>NATIONAL</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="trainer : ${trainers}">
+                                <td th:text="${trainerStat.index + 1 + currIndex}"></td>
+                                <td th:text="${trainer.name}"></td>
+                                <td th:text="${trainer.email}"></td>
+                                <td th:text="${trainer.telNumber}"></td>
+                                <td th:text="${trainer.national}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12 mt-3" th:if="${totalElements > size}">
+                <!-- directors pagination -->
+                <nav aria-label="Pagination">
+                    <ul class="pagination justify-content-center font-weight-bold">
+                        <li class="page-item" th:classappend="${paginationRange.currentPage le 1} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{/general-management/trainer-list(page=${1})}"
+                               aria-label="Previous" title="First Page" data-toggle="tooltip">
+                                <span aria-hidden="true">First</span>
+                            </a>
+                        </li>
+                        <li class="page-item" th:classappend="${paginationRange.currentPage le 1} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{/general-management/trainer-list(page=${cPage - 1})}"
+                               aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"
+                            th:each="i : ${#numbers.sequence( paginationRange.min, paginationRange.max)}"
+                            th:classappend="${i eq paginationRange.currentPage} ? 'active'">
+                            <a class="page-link"
+                               th:href="@{/general-management/trainer-list(page=${i})}"
+                               th:text="${i}"
+                               th:title="${'Page '+ i}" data-toggle="tooltip">
+                            </a>
+                        </li>
+                        <li class="page-item"
+                            th:classappend="${paginationRange.currentPage ge totalPages } ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{/general-management/trainer-list(page=${cPage + 1})}"
+                               aria-label="Next" title="Next Page" data-toggle="tooltip">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"
+                            th:classappend="${paginationRange.currentPage ge totalPages } ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{/general-management/trainer-list(page=${totalPages})}"
+                               aria-label="Next" title="Last Page" data-toggle="tooltip">
+                                <span aria-hidden="true">Last</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+
+</html>
